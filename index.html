@@ -1191,7 +1191,7 @@ const ROTAS = Object.keys(SETOR_MAP).sort((a,b)=>Number(a)-Number(b)).map(cod =>
   setor: SETOR_MAP[cod],
   dias: DIAS_POR_SETOR[cod] || [0,1,2,3,4,5,6]
 }));
-let state = { notas:[], comentarios:[], separacoes:[], chegadas:[], movimentos:[], inventarios:[], invNotas:[], invComentarios:[], conferencias:[], confItens:[] };
+let state = { notas:[], comentarios:[], separacoes:[], chegadas:[], movimentos:[], inventarios:[], invNotas:[], invComentarios:[], conferencias:[], confItens:[], coletas:[], coletasNotas:[] };
 let syncing = false;
 let filtroNotas = 'todas';
 let filtroGaiolas = 'hoje';
@@ -3803,9 +3803,7 @@ function normColetaNota(n) {
   return r;
 }
 
-// Inicializa arrays de coleta no state se ainda não existirem
-if (!state.coletas)      state.coletas      = [];
-if (!state.coletasNotas) state.coletasNotas = [];
+// state.coletas e state.coletasNotas já inicializados na declaração do state
 
 // ── Variável de contexto da coleta aberta ────────────────────────────────
 let _coletaAbertaId = null;
