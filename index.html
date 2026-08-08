@@ -292,7 +292,7 @@ body{overflow:hidden}
 .inv-buscares{background:var(--surface2);border:1px solid var(--accentL);border-radius:var(--rs);padding:10px 13px;margin-bottom:4px;font-size:13px}
 .inv-buscares strong{color:var(--accentL)}
 /* ===== MODAL RELATÓRIO DE INVENTÁRIO ===== */
-.modal-full{position:absolute;inset:0;z-index:97;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
+.modal-full{position:absolute;inset:0;z-index:93;background:var(--bg);display:flex;flex-direction:column;overflow:hidden}
 .modal-full.hidden{display:none}
 .modal-full-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0}
 .modal-full-titulo{font-size:15px;font-weight:800}
@@ -1285,7 +1285,7 @@ async function carregarDados(mostrarErro=true) {
   if (syncing) return;
   syncing = true;
   try {
-    const r = await fetch(URL_SCRIPT);
+    const r = await fetch(URL_SCRIPT, { redirect: 'follow' });
     if (!r.ok) throw new Error('http');
     const d = await r.json();
     // Merge inteligente: preserva campos locais se o servidor devolver vazio
@@ -1318,9 +1318,15 @@ async function carregarDados(mostrarErro=true) {
 }
 
 async function post(body) {
-  const r = await fetch(URL_SCRIPT, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(body) });
+  const r = await fetch(URL_SCRIPT, {
+    method: 'POST',
+    redirect: 'follow',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(body)
+  });
+  if (!r.ok) throw new Error('HTTP ' + r.status);
   const d = await r.json();
-  if (!d.ok) throw new Error(d.erro||'erro');
+  if (!d.ok) throw new Error(d.erro || 'erro desconhecido');
   return d;
 }
 
